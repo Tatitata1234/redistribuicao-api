@@ -1,0 +1,16 @@
+org\example\CaixinhaMapper.class
+org\example\CaixinhaResponse$CaixinhaResponseBuilder.class
+org\example\Caixinha$CaixinhaBuilder.class
+org\example\Utililidade.class
+org\example\Application.class
+org\example\CaixinhaService.class
+org\example\CaixinhaUtils.class
+org\example\ConfigCaixinhaResponse.class
+org\example\CaixinhaController.class
+org\example\Classificacao.class
+org\example\Caixinha.class
+org\example\ConfigCaixinha.class
+org\example\ConfigCaixinha$ConfigCaixinhaBuilder.class
+org\example\ConfigCaixinhaMapper.class
+org\example\ConfigCaixinhaResponse$ConfigCaixinhaResponseBuilder.class
+org\example\CaixinhaResponse.class
