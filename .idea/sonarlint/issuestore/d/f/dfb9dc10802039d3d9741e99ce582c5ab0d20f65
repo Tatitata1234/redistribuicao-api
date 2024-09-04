@@ -1,0 +1,10 @@
+
+t
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 31 to the 15 allowed.(ô’ÅŸÿÿÿÿÿ8»Ú«Ó›2
+]	java:S125I"<This block of commented-out lines of code should be removed.(ÚÓ¡·üÿÿÿÿ8Þ’ü×›2
+f
+java:S1128"DRemove this unused import 'org.springframework.http.ResponseEntity'.(¶¯ø¦úÿÿÿÿ8Ê™û×›2
+T
+java:S1128"2Remove this unused import 'java.math.MathContext'.(ú¯Ë¸ùÿÿÿÿ8ß’ü×›2
+P
+java:S1128	"3Remove this unused import 'java.math.RoundingMode'.(¿ì†‹8à’ü×›2
