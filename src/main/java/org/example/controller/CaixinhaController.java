@@ -1,5 +1,7 @@
-package org.example;
+package org.example.controller;
 
+import org.example.controller.response.CaixinhaResponse;
+import org.example.service.CaixinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

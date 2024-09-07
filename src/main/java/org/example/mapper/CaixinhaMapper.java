@@ -1,4 +1,8 @@
-package org.example;
+package org.example.mapper;
+
+import org.example.controller.response.CaixinhaResponse;
+import org.example.model.Caixinha;
+import org.example.model.CaixinhaDouble;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

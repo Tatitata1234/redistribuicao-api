@@ -1,12 +1,16 @@
-package org.example;
+package org.example.service.utils;
 
+import org.example.model.enumerator.Classificacao;
+import org.example.model.enumerator.Utililidade;
+import org.example.model.Caixinha;
+import org.example.model.CaixinhaDouble;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-import static org.example.Classificacao.*;
-import static org.example.Utililidade.INUTIL;
-import static org.example.Utililidade.UTIL;
+import static org.example.model.enumerator.Classificacao.*;
+import static org.example.model.enumerator.Utililidade.INUTIL;
+import static org.example.model.enumerator.Utililidade.UTIL;
 
 @Service
 public class CaixinhaUtils {

@@ -1,5 +1,9 @@
-package org.example;
+package org.example.service;
 
+import org.example.model.CaixinhaDouble;
+import org.example.mapper.CaixinhaMapper;
+import org.example.controller.response.CaixinhaResponse;
+import org.example.service.utils.CaixinhaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

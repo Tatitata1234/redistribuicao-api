@@ -1,6 +1,8 @@
-package org.example;
+package org.example.model;
 
 import lombok.*;
+import org.example.model.enumerator.Classificacao;
+import org.example.model.enumerator.Utililidade;
 
 import java.util.Objects;
 

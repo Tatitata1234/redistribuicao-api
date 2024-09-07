@@ -1,5 +1,9 @@
-package org.example;
+package org.example.service;
 
+import org.example.model.Caixinha;
+import org.example.mapper.CaixinhaMapper;
+import org.example.controller.response.CaixinhaResponse;
+import org.example.service.utils.CaixinhaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.example.Caixinha.VALOR_MINIMO;
+import static org.example.model.Caixinha.VALOR_MINIMO;
 
 @Service
 public class CaixinhaService {
