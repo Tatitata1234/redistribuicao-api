@@ -17,7 +17,8 @@ public class Caixinha {
     private String nome;
     private BigDecimal total;
     private BigDecimal arrecadado;
-    private ConfigCaixinha configCaixinha;
+    private Classificacao classificacao;
+    private Utililidade utililidade;
     private BigDecimal investimento = new BigDecimal(0);
     private BigDecimal pontuacao;
     private BigDecimal porcentagem;
@@ -25,7 +26,8 @@ public class Caixinha {
     private String mensagem;
 
     public void calculaPontuacao() {
-        pontuacao = new BigDecimal(configCaixinha.getClassificacao().getValor() * configCaixinha.getUtililidade().getValor())
+        pontuacao = new BigDecimal(this.classificacao.getValor() *
+                this.utililidade.getValor())
                 .divide(total, MathContext.DECIMAL128);
     }
 
@@ -39,16 +41,6 @@ public class Caixinha {
             investimento = investimentoFinal.round(MathContext.DECIMAL32).setScale(2, RoundingMode.HALF_EVEN);
         } else
             this.investimento = this.investimento.add(investimentoFinal).round(MathContext.DECIMAL32).setScale(2, RoundingMode.HALF_EVEN);
-    }
-
-    @Override
-    public String toString() {
-        if (nome.length() < 30) {
-            for (int i = nome.length(); i <= 30; i++)
-                nome = nome.concat(".");
-        }
-        return nome +
-                "R$ " + investimento.round(MathContext.DECIMAL32).setScale(2, RoundingMode.HALF_EVEN) + (quitada ? " Pode comprar!":(investimento.compareTo(VALOR_MINIMO)<0 ? " Menor que valor programado!":" Depositar: " + investimento.subtract(VALOR_MINIMO).round(MathContext.DECIMAL32).setScale(2, RoundingMode.HALF_EVEN)) + "..............."+configCaixinha.getClassificacao()+" - " + configCaixinha.getUtililidade());
     }
 
     public BigDecimal getInvestimento() {
