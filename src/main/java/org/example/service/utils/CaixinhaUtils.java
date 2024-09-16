@@ -1,12 +1,14 @@
 package org.example.service.utils;
 
-import org.example.model.enumerator.Classificacao;
+import org.example.controller.response.CaixinhaResponse;
+import org.example.mapper.CaixinhaMapper;
 import org.example.model.enumerator.Utililidade;
-import org.example.model.Caixinha;
-import org.example.model.CaixinhaDouble;
+import org.example.model.entity.Caixinha;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.example.model.enumerator.Classificacao.*;
 import static org.example.model.enumerator.Utililidade.INUTIL;
@@ -45,34 +47,23 @@ public class CaixinhaUtils {
         return caixinhas;
     }
 
-    public CaixinhaDouble[] montaCaixinhasDoubleArray() {
-        CaixinhaDouble[] caixinhas = new CaixinhaDouble[26];
-        caixinhas[0] = CaixinhaDouble.builder().nome("Viagem com mamis").total(20000).arrecadado(244.61).classificacao(Classificacao.VIAGEM).utililidade(INUTIL).build();
-        caixinhas[1] = CaixinhaDouble.builder().nome("Urubici").total(2000).arrecadado(60.80).classificacao(Classificacao.VIAGEM).utililidade(INUTIL).build();
-        caixinhas[2] = CaixinhaDouble.builder().nome("iPad").total(3500).arrecadado(63.93).classificacao(Classificacao.TECNOLOGIA).utililidade(UTIL).build();
-        caixinhas[3] = CaixinhaDouble.builder().nome("Apartamento ENTRADA").total(10052.87).arrecadado(147.04).classificacao(Classificacao.DIVIDA).utililidade(Utililidade.DIVIDA).build();
-        caixinhas[4] = CaixinhaDouble.builder().nome("Forno elétrico").total(700).arrecadado(56.69+347).classificacao(PRECISO_PARA_AGORA).utililidade(UTIL).build();
-        caixinhas[5] = CaixinhaDouble.builder().nome("Studio Gabriel").total(50000).arrecadado(37.04).classificacao(Classificacao.QUERO).utililidade(UTIL).build();
-        caixinhas[6] = CaixinhaDouble.builder().nome("Casamento").total(30000).arrecadado(37.04).classificacao(QUERO_MUITO).utililidade(INUTIL).build();
-        caixinhas[7] = CaixinhaDouble.builder().nome("Sushi Cléber").total(600).arrecadado(85.15).classificacao(QUERO_MUITO).utililidade(INUTIL).build();
-        caixinhas[8] = CaixinhaDouble.builder().nome("Presente de Natal amoreco").total(400).arrecadado(111.66).classificacao(QUERO_MUITO).utililidade(INUTIL).build();
-        caixinhas[9] = CaixinhaDouble.builder().nome("Quebra-cabeça").total(150).arrecadado(45.30).classificacao(BUGIGANGA).utililidade(INUTIL).build();
-        caixinhas[10] = CaixinhaDouble.builder().nome("Rummikub").total(200).arrecadado(41.97).classificacao(BUGIGANGA).utililidade(INUTIL).build();
-        caixinhas[11] = CaixinhaDouble.builder().nome("Fogão").total(1500).arrecadado(199.36).classificacao(PRECISO_PARA_AGORA).utililidade(UTIL).build();
-        caixinhas[12] = CaixinhaDouble.builder().nome("Máquina de lavar de roupa").total(3000).arrecadado(100.21).classificacao(PRECISO_PARA_AGORA).utililidade(UTIL).build();
-        caixinhas[13] = CaixinhaDouble.builder().nome("Geladeira").total(3000).arrecadado(100.20).classificacao(PRECISO_PARA_AGORA).utililidade(UTIL).build();
-        caixinhas[14] = CaixinhaDouble.builder().nome("Kit elemento químico").total(200).arrecadado(27.17).classificacao(BUGIGANGA).utililidade(UTIL).build();
-        caixinhas[15] = CaixinhaDouble.builder().nome("Aspirador").total(1000).arrecadado(255.84).classificacao(PRECISO_PARA_AGORA).utililidade(UTIL).build();
-        caixinhas[16] = CaixinhaDouble.builder().nome("The sims").total(200).arrecadado(80.66).classificacao(Classificacao.QUERO).utililidade(INUTIL).build();
-        caixinhas[17] = CaixinhaDouble.builder().nome("Monitor").total(12000).arrecadado(6.02).classificacao(Classificacao.TECNOLOGIA).utililidade(UTIL).build();
-        caixinhas[18] = CaixinhaDouble.builder().nome("Apple Watch").total(4500).arrecadado(6.02).classificacao(Classificacao.TECNOLOGIA).utililidade(UTIL).build();
-        caixinhas[19] = CaixinhaDouble.builder().nome("Tramontina itria").total(850).arrecadado(75.96).classificacao(QUERO_MUITO).utililidade(UTIL).build();
-        caixinhas[20] = CaixinhaDouble.builder().nome("ZFOLD").total(11000).arrecadado(6.01).classificacao(Classificacao.TECNOLOGIA).utililidade(UTIL).build();
-        caixinhas[21] = CaixinhaDouble.builder().nome("Lava louça").total(2000).arrecadado(127.40).classificacao(PRECISO_PARA_AGORA).utililidade(UTIL).build();
-        caixinhas[22] = CaixinhaDouble.builder().nome("Pagar pai").total(4000).arrecadado(254.82).classificacao(Classificacao.DIVIDA).utililidade(Utililidade.DIVIDA).build();
-        caixinhas[23] = CaixinhaDouble.builder().nome("Apartamento QUITAR").total(168000).arrecadado(6.07).classificacao(Classificacao.DIVIDA).utililidade(Utililidade.DIVIDA).build();
-        caixinhas[24] = CaixinhaDouble.builder().nome("Faxineira").total(20000).arrecadado(6).classificacao(QUERO_MUITO).utililidade(UTIL).build();
-        caixinhas[25] = CaixinhaDouble.builder().nome("Emergência Carro").total(4000).arrecadado(1).classificacao(Classificacao.PRECISO).utililidade(UTIL).build();
-        return caixinhas;
+    public static List<CaixinhaResponse> ordenaCaixinhas(Caixinha[] caixinhas) {
+        List<CaixinhaResponse> answer = new ArrayList<>();
+        int controle = 128;
+        while (controle > 0) {
+            int utilidade = 4;
+            while (utilidade > 0) {
+                for (Caixinha c : caixinhas) {
+                    if (c.getClassificacao().getValor() == controle
+                            && c.getUtililidade().getValor() == utilidade) {
+                        c.setMensagem();
+                        answer.add(CaixinhaMapper.toResponse(c));
+                    }
+                }
+                utilidade /= 2;
+            }
+            controle /= 2;
+        }
+        return answer;
     }
 }

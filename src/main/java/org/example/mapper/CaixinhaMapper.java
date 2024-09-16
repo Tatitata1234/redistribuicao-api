@@ -2,14 +2,10 @@ package org.example.mapper;
 
 import org.example.controller.request.CaixinhaRequest;
 import org.example.controller.response.CaixinhaResponse;
-import org.example.model.Caixinha;
-import org.example.model.CaixinhaDouble;
+import org.example.model.entity.Caixinha;
 import org.example.model.enumerator.Classificacao;
 import org.example.model.enumerator.Utililidade;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 
 public class CaixinhaMapper {
 
@@ -30,19 +26,6 @@ public class CaixinhaMapper {
                 .build();
     }
 
-    public static CaixinhaResponse toResponse(CaixinhaDouble entity) {
-        return CaixinhaResponse.builder()
-                .total(BigDecimal.valueOf(entity.getTotal()))
-                .nome(entity.getNome())
-                .quitada(entity.isQuitada())
-                .classificacao(entity.getClassificacao().name())
-                .utilidade(entity.getUtililidade().name())
-                .arrecadado(BigDecimal.valueOf(entity.getArrecadado()).round(MathContext.DECIMAL32).setScale(2, RoundingMode.HALF_EVEN))
-                .investimento(BigDecimal.valueOf(entity.getInvestimento()).round(MathContext.DECIMAL32).setScale(2, RoundingMode.HALF_EVEN))
-                .mensagem(entity.getMensagem())
-                .build();
-    }
-
     public static Caixinha toEntity(CaixinhaRequest request) {
         return Caixinha.builder()
                 .arrecadado(request.getArrecadado())
@@ -53,5 +36,11 @@ public class CaixinhaMapper {
                 .nome(request.getNome())
                 .mensagem(request.getMensagem())
                 .build();
+    }
+
+    public static void toQuitada(Caixinha c) {
+        c.setMensagem("PODE COMPRAR TUDO!");
+        c.setQuitada(true);
+        c.setInvestimento(c.getTotal().subtract(c.getArrecadado()));
     }
 }

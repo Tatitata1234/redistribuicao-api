@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.model.entity;
 
 import lombok.*;
 import org.example.model.enumerator.Classificacao;
@@ -57,6 +57,15 @@ public class Caixinha {
             this.mensagem = mensagem;
         } else {
             this.mensagem += "\n" + mensagem;
+        }
+    }
+
+    public void setMensagem() {
+        if (this.quitada) {
+            this.mensagem = ("Pode comprar!");
+        }
+        if (this.investimento.compareTo(VALOR_MINIMO) < 0) {
+            this.mensagem = ("Menor que valor programado!");
         }
     }
 

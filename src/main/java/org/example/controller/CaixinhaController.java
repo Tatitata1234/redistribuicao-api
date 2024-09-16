@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.validation.Valid;
 import org.example.controller.request.CaixinhaRequest;
 import org.example.controller.response.CaixinhaResponse;
 import org.example.service.CaixinhaService;
@@ -21,7 +22,7 @@ public class CaixinhaController {
     @Autowired
     private CaixinhaService caixinhaService;
 
-    @GetMapping
+    @GetMapping("/configDefault")
     public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento) {
         if (investimento < 26) {
             return ResponseEntity.badRequest().body(new ArrayList<>());
@@ -32,8 +33,8 @@ public class CaixinhaController {
     }
 
 
-    @GetMapping("/teste")
-    public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento, @RequestBody List<CaixinhaRequest> caixinhas) {
+    @GetMapping
+    public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento, @RequestBody @Valid List<CaixinhaRequest> caixinhas) {
         if (investimento < 26) {
             return ResponseEntity.badRequest().body(new ArrayList<>());
         }
