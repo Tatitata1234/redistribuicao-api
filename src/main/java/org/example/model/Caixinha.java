@@ -28,9 +28,9 @@ public class Caixinha {
     private String mensagem;
 
     public void calculaPontuacao() {
-        pontuacao = new BigDecimal(this.classificacao.getValor() *
+        this.pontuacao = new BigDecimal(this.classificacao.getValor() *
                 this.utililidade.getValor())
-                .divide(total, MathContext.DECIMAL128);
+                .divide(total.subtract(arrecadado), MathContext.DECIMAL128);
     }
 
 

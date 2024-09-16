@@ -1,7 +1,6 @@
 package org.example.model.enumerator;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public enum Classificacao {

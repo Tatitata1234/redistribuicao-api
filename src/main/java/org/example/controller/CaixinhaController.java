@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.controller.request.CaixinhaRequest;
 import org.example.controller.response.CaixinhaResponse;
 import org.example.service.CaixinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +32,13 @@ public class CaixinhaController {
     }
 
 
+    @GetMapping("/teste")
+    public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento, @RequestBody List<CaixinhaRequest> caixinhas) {
+        if (investimento < 26) {
+            return ResponseEntity.badRequest().body(new ArrayList<>());
+        }
+        BigDecimal valorSobrou = new BigDecimal(investimento);
+        List<CaixinhaResponse> caixinhasRedistribuidas = caixinhaService.calculaDitribuicaoInvestimento(valorSobrou, caixinhas);
+        return ResponseEntity.ok(caixinhasRedistribuidas);
+    }
 }

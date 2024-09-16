@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.controller.request.CaixinhaRequest;
 import org.example.model.Caixinha;
 import org.example.mapper.CaixinhaMapper;
 import org.example.controller.response.CaixinhaResponse;
@@ -21,9 +22,7 @@ public class CaixinhaService {
     @Autowired
     private CaixinhaUtils caixinhaUtils;
 
-    private BigDecimal soma = new BigDecimal(0);
 
-    private BigDecimal totalSomaPontuacao = new BigDecimal(0);
 
     public List<CaixinhaResponse> calculaDitribuicaoInvestimento(BigDecimal valorSobrou) {
         Caixinha[] caixinhas = caixinhaUtils.montaCaixinhas();
@@ -32,8 +31,16 @@ public class CaixinhaService {
 
         BigDecimal resto = valorSobrou;
         BigDecimal restoTemp = valorSobrou;
+        BigDecimal soma = new BigDecimal(0);
 
-        somasECalculaPontuacao(caixinhas);
+        BigDecimal totalSomaPontuacao = new BigDecimal(0);
+
+        for (Caixinha c : caixinhas) {
+            c.calculaPontuacao();
+            totalSomaPontuacao = totalSomaPontuacao.add(c.getPontuacao());
+            soma = soma.add(c.getTotal().subtract(c.getArrecadado()));
+        }
+
         int ck = 1;
 
         if (valorSobrou.compareTo(soma) >= 0) {
@@ -99,14 +106,6 @@ public class CaixinhaService {
         }
     }
 
-    private void somasECalculaPontuacao(Caixinha[] caixinhas) {
-        for (Caixinha c : caixinhas) {
-            c.calculaPontuacao();
-            totalSomaPontuacao = totalSomaPontuacao.add(c.getPontuacao());
-            soma = soma.add(c.getTotal().subtract(c.getArrecadado()));
-        }
-    }
-
     private Caixinha[] removeTempDois(Caixinha c, Caixinha[] tempDois) {
         Caixinha[] answer = new Caixinha[tempDois.length - 1];
         int i = 0;
@@ -119,4 +118,58 @@ public class CaixinhaService {
         return answer;
     }
 
+    public List<CaixinhaResponse> calculaDitribuicaoInvestimento(BigDecimal valorSobrou, List<CaixinhaRequest> caixinhas) {
+        Caixinha[] caixinhasArray = caixinhas.stream().map(CaixinhaMapper::toEntity).toList().toArray(Caixinha[]::new);
+        Caixinha[] temp = caixinhasArray;
+        Caixinha[] tempDois = caixinhasArray;
+
+        BigDecimal resto = valorSobrou;
+        BigDecimal restoTemp = valorSobrou;
+
+        BigDecimal soma = new BigDecimal(0);
+        BigDecimal totalSomaPontuacao = new BigDecimal(0);
+
+        for (Caixinha c : caixinhasArray) {
+            c.calculaPontuacao();
+            totalSomaPontuacao = totalSomaPontuacao.add(c.getPontuacao());
+            soma = soma.add(c.getTotal().subtract(c.getArrecadado()));
+        }
+        int ck = 1;
+
+        if (valorSobrou.compareTo(soma) >= 0) {
+            Arrays.stream(caixinhasArray).toList().forEach(c -> {
+                c.setMensagem("PODE COMPRAR TUDO!");
+                c.setQuitada(true);
+                c.setInvestimento(c.getTotal().subtract(c.getArrecadado()));
+            });
+            return Arrays.stream(caixinhasArray).toList().stream().map(CaixinhaMapper::toResponse).toList();
+        }
+
+        BigDecimal totalSomaPontuacaoTemp = totalSomaPontuacao;
+        do {
+            for (Caixinha c : temp) {
+                if (c.isQuitada()) continue;
+                BigDecimal investimentoCalculado = c.getPontuacao().divide(totalSomaPontuacao, MathContext.DECIMAL128).multiply(resto);
+                BigDecimal diferenca = c.getTotal().subtract(c.getArrecadado()).subtract(c.getInvestimento());
+                if (investimentoCalculado.compareTo(diferenca) >= 0) {
+                    c.adicionaInvestimento(diferenca);
+                    tempDois = removeTempDois(c, tempDois);
+                    restoTemp = restoTemp.subtract(diferenca);
+                    c.setQuitada(true);
+                    totalSomaPontuacaoTemp = totalSomaPontuacao.subtract(c.getPontuacao());
+                } else {
+                    c.adicionaInvestimento(investimentoCalculado);
+                    restoTemp = restoTemp.subtract(investimentoCalculado);
+                }
+            }
+            ck++;
+            resto = restoTemp;
+            temp = tempDois;
+            totalSomaPontuacao = totalSomaPontuacaoTemp;
+        } while (resto.compareTo(BigDecimal.valueOf(0.01)) >= 0);
+
+        System.out.println(ck);
+
+        return ordenaCaixinhas(caixinhasArray);
+    }
 }

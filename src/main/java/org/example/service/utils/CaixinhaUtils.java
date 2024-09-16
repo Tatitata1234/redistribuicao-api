@@ -50,7 +50,7 @@ public class CaixinhaUtils {
         caixinhas[0] = CaixinhaDouble.builder().nome("Viagem com mamis").total(20000).arrecadado(244.61).classificacao(Classificacao.VIAGEM).utililidade(INUTIL).build();
         caixinhas[1] = CaixinhaDouble.builder().nome("Urubici").total(2000).arrecadado(60.80).classificacao(Classificacao.VIAGEM).utililidade(INUTIL).build();
         caixinhas[2] = CaixinhaDouble.builder().nome("iPad").total(3500).arrecadado(63.93).classificacao(Classificacao.TECNOLOGIA).utililidade(UTIL).build();
-        caixinhas[3] = CaixinhaDouble.builder().nome("Apartamento ENTRADA").total(11145.09).arrecadado(147.04).classificacao(Classificacao.DIVIDA).utililidade(Utililidade.DIVIDA).build();
+        caixinhas[3] = CaixinhaDouble.builder().nome("Apartamento ENTRADA").total(10052.87).arrecadado(147.04).classificacao(Classificacao.DIVIDA).utililidade(Utililidade.DIVIDA).build();
         caixinhas[4] = CaixinhaDouble.builder().nome("Forno elétrico").total(700).arrecadado(56.69+347).classificacao(PRECISO_PARA_AGORA).utililidade(UTIL).build();
         caixinhas[5] = CaixinhaDouble.builder().nome("Studio Gabriel").total(50000).arrecadado(37.04).classificacao(Classificacao.QUERO).utililidade(UTIL).build();
         caixinhas[6] = CaixinhaDouble.builder().nome("Casamento").total(30000).arrecadado(37.04).classificacao(QUERO_MUITO).utililidade(INUTIL).build();

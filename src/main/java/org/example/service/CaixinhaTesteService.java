@@ -78,13 +78,12 @@ public class CaixinhaTesteService {
     }
 
     private CaixinhaDouble[] removeTempDois(CaixinhaDouble caixinhaDouble, CaixinhaDouble[] tempDois) {
-        CaixinhaDouble[] answer = new CaixinhaDouble[tempDois.length-1];
-        for (int i = 0, j=0; j < tempDois.length; j++) {
-            if (tempDois[j] != null) {
-                if (!tempDois[j].getNome().equals(caixinhaDouble.getNome())) {
-                    answer[i] = tempDois[j];
-                    i++;
-                }
+        CaixinhaDouble[] answer = new CaixinhaDouble[tempDois.length - 1];
+        int i = 0;
+        for (int j = 0; j < tempDois.length; j++) {
+            if (tempDois[j] != null && !tempDois[j].getNome().equals(caixinhaDouble.getNome())) {
+                answer[i] = tempDois[j];
+                i++;
             }
         }
         return answer;
