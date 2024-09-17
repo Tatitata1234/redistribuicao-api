@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/caixinhas")
-@CrossOrigin(origins = "http://localhost:4000")
+@CrossOrigin(origins = "https://tatitata1234.github.io/redistribuicao/")
 public class CaixinhaController {
 
     @Autowired
