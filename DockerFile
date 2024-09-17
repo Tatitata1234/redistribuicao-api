@@ -1,0 +1,14 @@
+# Usar uma imagem base com JDK 17 (ou outra versão do JDK que você esteja usando)
+FROM openjdk:17-jdk-slim
+
+# Definir o diretório de trabalho dentro do container
+WORKDIR /app
+
+# Copiar o arquivo JAR da sua aplicação para o container
+COPY target/redistribuicao-1.0-SNAPSHOT.jar /app/redistribuicao.jar
+
+# Expor a porta que a aplicação vai usar (por exemplo, porta 8080)
+EXPOSE 8080
+
+# Definir o comando para rodar a aplicação Java
+CMD ["java", "-jar", "redistribuicao.jar"]

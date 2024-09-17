@@ -75,4 +75,17 @@ public class Caixinha {
         }
         return this.mensagem;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Caixinha caixinha = (Caixinha) o;
+        return quitada == caixinha.quitada && nome.equals(caixinha.nome) && total.equals(caixinha.total) && arrecadado.equals(caixinha.arrecadado) && classificacao == caixinha.classificacao && utililidade == caixinha.utililidade && Objects.equals(investimento, caixinha.investimento) && Objects.equals(pontuacao, caixinha.pontuacao) && Objects.equals(porcentagem, caixinha.porcentagem) && Objects.equals(mensagem, caixinha.mensagem);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, total, arrecadado, classificacao, utililidade, investimento, pontuacao, porcentagem, quitada, mensagem);
+    }
 }

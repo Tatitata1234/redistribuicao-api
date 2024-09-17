@@ -9,9 +9,7 @@ import org.example.model.enumerator.Utililidade;
 
 public class CaixinhaMapper {
 
-    private CaixinhaMapper() {
-
-    }
+    private CaixinhaMapper() {}
 
     public static CaixinhaResponse toResponse(Caixinha entity) {
         return CaixinhaResponse.builder()
