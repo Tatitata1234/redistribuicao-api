@@ -16,13 +16,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/caixinhas")
-@CrossOrigin(origins = "https://tatitata1234.github.io/redistribuicao/")
+@CrossOrigin(origins = "https://tatitata1234.github.io/")
 public class CaixinhaController {
 
     @Autowired
     private CaixinhaService caixinhaService;
 
-    @GetMapping("/configDefault")
+    @GetMapping("/  ")
     public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento) {
         if (investimento < 26) {
             return ResponseEntity.badRequest().body(new ArrayList<>());
