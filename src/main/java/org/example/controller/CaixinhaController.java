@@ -22,7 +22,7 @@ public class CaixinhaController {
     @Autowired
     private CaixinhaService caixinhaService;
 
-    @GetMapping("/  ")
+    @GetMapping("/configDefault")
     public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento) {
         if (investimento < 26) {
             return ResponseEntity.badRequest().body(new ArrayList<>());
