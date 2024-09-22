@@ -1,31 +1,65 @@
 package org.example.model.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.example.model.enumerator.Classificacao;
-import org.example.model.enumerator.Utililidade;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Objects;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
 public class Caixinha {
     public static final BigDecimal VALOR_MINIMO = new BigDecimal(5);
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(nullable = false)
+    private Long id;
+
+    @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false, name = "valor_total")
     private BigDecimal total;
+
+    @Column(nullable = false, name = "valor_arrecadado")
     private BigDecimal arrecadado;
+
+    @ManyToOne
+    @JoinColumn(name = "id_classificacao")
     private Classificacao classificacao;
-    private Utililidade utililidade;
+
+    @ManyToOne
+    @JoinColumn(name = "id_utilidade")
+    private Utilidade utililidade;
+
+    @Column(nullable = false)
     private BigDecimal investimento = new BigDecimal(0);
+
+    @Transient
     private BigDecimal pontuacao;
+
+    @Transient
     private BigDecimal porcentagem;
+
+    @Column(nullable = false)
     private boolean quitada;
+
     private String mensagem;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
+    private Usuario usuario;
+
+    @Column(nullable = false)
+    private Boolean ativo = true;
 
     public void calculaPontuacao() {
         this.pontuacao = new BigDecimal(this.classificacao.getValor() *

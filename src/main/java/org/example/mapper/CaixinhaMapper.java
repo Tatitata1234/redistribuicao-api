@@ -3,8 +3,8 @@ package org.example.mapper;
 import org.example.controller.request.CaixinhaRequest;
 import org.example.controller.response.CaixinhaResponse;
 import org.example.model.entity.Caixinha;
-import org.example.model.enumerator.Classificacao;
-import org.example.model.enumerator.Utililidade;
+import org.example.model.entity.Classificacao;
+import org.example.model.entity.Utilidade;
 
 
 public class CaixinhaMapper {
@@ -16,8 +16,8 @@ public class CaixinhaMapper {
                 .total(entity.getTotal())
                 .nome(entity.getNome())
                 .quitada(entity.isQuitada())
-                .classificacao(entity.getClassificacao().name())
-                .utilidade(entity.getUtililidade().name())
+                .classificacao(entity.getClassificacao().getNome())
+                .utilidade(entity.getUtililidade().getNome())
                 .arrecadado(entity.getArrecadado())
                 .investimento(entity.getInvestimento())
                 .mensagem(entity.getMensagem())
@@ -27,9 +27,9 @@ public class CaixinhaMapper {
     public static Caixinha toEntity(CaixinhaRequest request) {
         return Caixinha.builder()
                 .arrecadado(request.getArrecadado())
-                .classificacao(Classificacao.valueOf(request.getClassificacao()))
+                .classificacao(Classificacao.builder().nome(request.getClassificacao()).build())
                 .total(request.getTotal())
-                .utililidade(Utililidade.valueOf(request.getUtilidade()))
+                .utililidade(Utilidade.builder().nome(request.getUtilidade()).build())
                 .quitada(request.isQuitada())
                 .nome(request.getNome())
                 .mensagem(request.getMensagem())
