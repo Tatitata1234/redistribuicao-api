@@ -5,6 +5,8 @@ import org.example.controller.response.CaixinhaResponse;
 import org.example.mapper.CaixinhaMapper;
 import org.example.model.dto.SomaPontuacaoDTO;
 import org.example.model.entity.Caixinha;
+import org.example.model.entity.Usuario;
+import org.example.repository.UsuarioRepository;
 import org.example.service.utils.CaixinhaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,16 +14,21 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.example.service.utils.CaixinhaUtils.ordenaCaixinhas;
 
 @Service
-public class CaixinhaService {
+public class RedistribuicaoService {
 
     @Autowired
     private CaixinhaUtils caixinhaUtils;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Cacheable("caixinha")
     public List<CaixinhaResponse> calculaDitribuicaoInvestimento(BigDecimal valorSobrou) {
@@ -36,7 +43,6 @@ public class CaixinhaService {
 
         return doRedistribuicao(valorSobrou, caixinhasArray);
     }
-
 
     private List<CaixinhaResponse> doRedistribuicao(BigDecimal valorSobrou, Caixinha[] caixinhasArray) {
         SomaPontuacaoDTO somaPontuacaoDTO = calculaSomaPontuacao(caixinhasArray);
@@ -82,7 +88,6 @@ public class CaixinhaService {
         System.out.println(ck);
     }
 
-
     private SomaPontuacaoDTO calculaSomaPontuacao(Caixinha[] caixinhasArray) {
         SomaPontuacaoDTO somaPontuacaoDTO = new SomaPontuacaoDTO();
         for (Caixinha c : caixinhasArray) {
@@ -92,5 +97,16 @@ public class CaixinhaService {
             somaPontuacaoDTO.setSoma(somaPontuacaoDTO.getSoma().add(c.getTotal().subtract(c.getArrecadado())));
         }
         return somaPontuacaoDTO;
+    }
+
+    @Cacheable("caixinha")
+    public List<CaixinhaResponse> calculaDitribuicaoInvestimento(BigDecimal valorSobrou, long usuarioId) {
+        Usuario usuario = usuarioRepository.findByIdAndAtivoIsTrue(usuarioId);
+        if (Objects.isNull(usuario)) {
+            return new ArrayList<>();
+        }
+        Caixinha[] caixinhasArray = usuario.getCaixinhas().toArray(Caixinha[]::new);
+
+        return doRedistribuicao(valorSobrou, caixinhasArray);
     }
 }
