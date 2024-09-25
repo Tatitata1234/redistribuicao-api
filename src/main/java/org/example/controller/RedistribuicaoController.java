@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/redistribuir")
-@CrossOrigin(origins = "https://tatitata1234.github.io/")
+@CrossOrigin(origins = "https://tatitata1234.github.io")
 public class RedistribuicaoController {
 
     @Autowired
