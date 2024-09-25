@@ -2,6 +2,7 @@ package org.example.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -16,6 +17,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Builder
 @Entity
+@SQLRestriction("ativo = true or quitada = true")
 public class Caixinha {
     public static final BigDecimal VALOR_MINIMO = new BigDecimal(5);
     @Id

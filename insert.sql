@@ -53,3 +53,9 @@ VALUES
 ('Faxineira', 20000, 6.01, (SELECT id FROM classificacao WHERE nome = 'QUERO_MUITO'), (SELECT id FROM utilidade WHERE nome = 'UTIL'), false, 1),
 ('Emergência carro', 4000, 1, (SELECT id FROM classificacao WHERE nome = 'PRECISO'), (SELECT id FROM utilidade WHERE nome = 'UTIL'), false, 1),
 ('Melissa', 370, 1, (SELECT id FROM classificacao WHERE nome = 'QUERO'), (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1);
+INSERT INTO caixinha (nome, valor_total, valor_arrecadado, id_classificacao, id_utilidade, quitada, id_usuario)
+VALUES
+('Caixinha Pedro', 1000, 1, (SELECT id FROM classificacao WHERE nome = 'QUERO'), (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 3);
+INSERT INTO caixinha (nome, valor_total, valor_arrecadado, id_classificacao, id_utilidade, quitada, id_usuario)
+VALUES
+('short decathlon', 80, 1, (SELECT id FROM classificacao WHERE nome = 'QUERO'), (SELECT id FROM utilidade WHERE nome = 'UTIL'), false, 1);
