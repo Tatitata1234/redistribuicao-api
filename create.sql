@@ -46,3 +46,13 @@ CREATE TABLE caixinha (
     id_usuario BIGINT REFERENCES usuario(id) ON DELETE CASCADE,
     ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
+-- Adicionar colunas na tabela 'caixinha'
+ALTER TABLE caixinha
+ADD COLUMN data_insercao DATE NOT NULL DEFAULT CURRENT_DATE,  -- Adiciona a data de inserção como DATE com valor padrão de data atual
+ADD COLUMN data_vencimento DATE,                             -- Adiciona a data de vencimento, opcional
+ADD COLUMN vencimento_programado BOOLEAN NOT NULL DEFAULT FALSE; -- Adiciona o campo booleano de vencimento programado com valor padrão 'false'
+
+-- Verificar se as alterações foram aplicadas corretamente
+SELECT column_name, data_type, is_nullable, column_default
+FROM information_schema.columns
+WHERE table_name = 'caixinha';

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,7 +70,7 @@ public class RedistribuicaoService {
         do {
             for (Caixinha c : caixinhasArray) {
                 if (c.isQuitada()) continue;
-                BigDecimal investimentoCalculado = c.getPontuacao().divide(totalSomaPontuacao, MathContext.DECIMAL128).multiply(resto);
+                BigDecimal investimentoCalculado = c.getPontuacao().divide(totalSomaPontuacao, MathContext.DECIMAL128).multiply(restoTemp);
                 BigDecimal diferenca = c.getTotal().subtract(c.getArrecadado()).subtract(c.getInvestimento());
                 if (investimentoCalculado.compareTo(diferenca) >= 0) {
                     c.adicionaInvestimento(diferenca);
@@ -76,6 +78,15 @@ public class RedistribuicaoService {
                     c.setQuitada(true);
                     totalSomaPontuacaoTemp = totalSomaPontuacao.subtract(c.getPontuacao());
                 } else {
+                    if (c.isVencimentoProgramado()) {
+                        BigDecimal mesesDiferenca = BigDecimal.valueOf(ChronoUnit.MONTHS.between(LocalDate.now(), c.getDataVencimento()));
+                        BigDecimal parcelaMinima = diferenca.divide(mesesDiferenca, MathContext.DECIMAL128);
+                        if (parcelaMinima.compareTo(investimentoCalculado) > 0 && parcelaMinima.compareTo(restoTemp) < 0) {
+                            c.adicionaInvestimento(parcelaMinima);
+                            restoTemp = restoTemp.subtract(parcelaMinima);
+                            continue;
+                        }
+                    }
                     c.adicionaInvestimento(investimentoCalculado);
                     restoTemp = restoTemp.subtract(investimentoCalculado);
                 }
@@ -99,7 +110,7 @@ public class RedistribuicaoService {
         return somaPontuacaoDTO;
     }
 
-    @Cacheable("caixinha")
+    // @Cacheable("caixinha")
     public List<CaixinhaResponse> calculaDitribuicaoInvestimento(BigDecimal valorSobrou, long usuarioId) {
         Usuario usuario = usuarioRepository.findByIdAndAtivoIsTrue(usuarioId);
         if (Objects.isNull(usuario)) {

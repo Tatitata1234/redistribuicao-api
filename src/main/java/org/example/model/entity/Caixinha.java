@@ -7,6 +7,7 @@ import org.hibernate.annotations.SQLRestriction;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -62,6 +63,14 @@ public class Caixinha {
 
     @Column(nullable = false)
     private Boolean ativo = true;
+
+    @Column(nullable = false)
+    private LocalDate dataInsercao;
+
+    private LocalDate dataVencimento;
+
+    @Column(nullable = false)
+    private boolean vencimentoProgramado = false;
 
     public void calculaPontuacao() {
         this.pontuacao = new BigDecimal(this.classificacao.getValor() *

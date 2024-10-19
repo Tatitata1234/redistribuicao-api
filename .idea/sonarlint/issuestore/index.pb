@@ -54,3 +54,7 @@ g
 7src/main/java/org/example/auth/service/AuthService.java,a\1\a139b84041029374b81f65afffcac1fa8534f83b
 m
 =src/main/java/org/example/auth/controller/AuthController.java,b\b\bb84c84b02a8a1458b60c8c7d6d224aa115b9b03
+h
+8src/main/java/org/example/auth/mapper/UsuarioMapper.java,2\1\21454d3416ee31c98a03b436c40491377035a476
+C
+updates mensais.sql,c\b\cb7e3849aded4c5698f17b785763c220de7efb61

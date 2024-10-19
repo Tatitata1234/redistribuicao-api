@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -47,21 +48,22 @@ public class CaixinhaUtils {
 
     public static List<CaixinhaResponse> ordenaCaixinhas(Caixinha[] caixinhas) {
         List<CaixinhaResponse> answer = new ArrayList<>();
-        int controle = 128;
-        while (controle > 0) {
-            int utilidade = 4;
-            while (utilidade > 0) {
-                for (Caixinha c : caixinhas) {
-                    if (c.getClassificacao().getValor() == controle
-                            && c.getUtililidade().getValor() == utilidade) {
-                        c.setMensagem();
-                        answer.add(CaixinhaMapper.toResponse(c));
-                    }
-                }
-                utilidade /= 2;
-            }
-            controle /= 2;
-        }
+//        int controle = 128;
+//        while (controle > 0) {
+//            int utilidade = 4;
+//            while (utilidade > 0) {
+//                for (Caixinha c : caixinhas) {
+//                    if (c.getClassificacao().getValor() == controle
+//                            && c.getUtililidade().getValor() == utilidade) {
+//                        c.setMensagem();
+//                        answer.add(CaixinhaMapper.toResponse(c));
+//                    }
+//                }
+//                utilidade /= 2;
+//            }
+//            controle /= 2;
+//        }
+        answer = Arrays.stream(caixinhas).toList().stream().map(CaixinhaMapper::toResponse).toList();
         return answer;
     }
 }

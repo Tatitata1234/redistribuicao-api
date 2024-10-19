@@ -59,3 +59,21 @@ VALUES
 INSERT INTO caixinha (nome, valor_total, valor_arrecadado, id_classificacao, id_utilidade, quitada, id_usuario)
 VALUES
 ('short decathlon', 80, 1, (SELECT id FROM classificacao WHERE nome = 'QUERO'), (SELECT id FROM utilidade WHERE nome = 'UTIL'), false, 1);
+
+INSERT INTO caixinha (nome, valor_total, valor_arrecadado, id_classificacao, id_utilidade, quitada, id_usuario)
+VALUES
+('dia namorados', 1000, 1, 2, (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1),
+('secadora roupa', 3700, 1, 34, (SELECT id FROM utilidade WHERE nome = 'UTIL'), false, 1),
+('vinho', 100, 1, 8, (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1),
+('dia dos amorecos', 1000, 1, 2, (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1),
+('calça', 180, 1, 5, (SELECT id FROM utilidade WHERE nome = 'UTIL'), false, 1),
+('roupa natal', 200, 1, 5, (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1),
+('roupa ano novo', 200, 1, 5, (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1),
+('vans', 380, 1, 3, (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1),
+('lupo', 150, 1, 5, (SELECT id FROM utilidade WHERE nome = 'UTIL'), false, 1),
+('presentes 2025', 1500, 1, 3, (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1),
+('coreia', 30000, 1, 6, (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1);
+select * from caixinha where id_usuario=1 order by 3-4 desc;
+INSERT INTO caixinha (nome, valor_total, valor_arrecadado, id_classificacao, id_utilidade, quitada, id_usuario)
+VALUES
+('colocar polpança', 600, 1, 1, (SELECT id FROM utilidade WHERE nome = 'DIVIDA'), false, 1);
