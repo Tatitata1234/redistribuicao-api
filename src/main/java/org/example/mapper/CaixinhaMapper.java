@@ -6,6 +6,8 @@ import org.example.model.entity.Caixinha;
 import org.example.model.entity.Classificacao;
 import org.example.model.entity.Utilidade;
 
+import java.math.RoundingMode;
+
 
 public class CaixinhaMapper {
 
@@ -19,8 +21,9 @@ public class CaixinhaMapper {
                 .classificacao(entity.getClassificacao().getNome())
                 .utilidade(entity.getUtililidade().getNome())
                 .arrecadado(entity.getArrecadado())
-                .investimento(entity.getInvestimento())
+                .investimento(entity.getInvestimento().setScale(2, RoundingMode.HALF_EVEN))
                 .mensagem(entity.getMensagem())
+                .valorProgramado(entity.isVencimentoProgramado())
                 .build();
     }
 

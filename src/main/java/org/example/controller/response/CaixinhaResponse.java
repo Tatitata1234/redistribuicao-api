@@ -18,4 +18,5 @@ public class CaixinhaResponse {
     private BigDecimal investimento = new BigDecimal(0);
     private boolean quitada;
     private String mensagem;
+    private boolean valorProgramado;
 }

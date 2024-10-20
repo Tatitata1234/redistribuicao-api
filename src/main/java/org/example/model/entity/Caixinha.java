@@ -72,6 +72,9 @@ public class Caixinha {
     @Column(nullable = false)
     private boolean vencimentoProgramado = false;
 
+    @Transient
+    private boolean controleVencimentoProgramado = false;
+
     public void calculaPontuacao() {
         this.pontuacao = new BigDecimal(this.classificacao.getValor() *
                 this.utililidade.getValor())
@@ -85,9 +88,9 @@ public class Caixinha {
 
     public void adicionaInvestimento(BigDecimal investimentoFinal) {
         if (investimento == null) {
-            investimento = investimentoFinal.round(MathContext.DECIMAL32).setScale(2, RoundingMode.HALF_EVEN);
+            investimento = investimentoFinal.round(MathContext.DECIMAL32);
         } else
-            this.investimento = this.investimento.add(investimentoFinal).round(MathContext.DECIMAL32).setScale(2, RoundingMode.HALF_EVEN);
+            this.investimento = this.investimento.add(investimentoFinal).round(MathContext.DECIMAL32);
     }
 
     public BigDecimal getInvestimento() {

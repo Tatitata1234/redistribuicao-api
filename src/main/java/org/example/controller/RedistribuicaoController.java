@@ -33,8 +33,7 @@ public class RedistribuicaoController {
 
 
     @PostMapping("/json")
-    public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento,
-                                                         @RequestBody @Valid List<CaixinhaRequest> caixinhas) {
+    public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento, @RequestBody @Valid List<CaixinhaRequest> caixinhas) {
         if (investimento < caixinhas.size()) {
             return ResponseEntity.badRequest().body(new ArrayList<>());
         }
