@@ -61,6 +61,7 @@ public class RedistribuicaoService {
 
         BigDecimal somaDiferencas = BigDecimal.ZERO;
         int contador = 0;
+        BigDecimal valorMinimoPorCaixinha = Caixinha.VALOR_MINIMO.multiply(BigDecimal.valueOf(caixinhasArray.length-1));
         for (Caixinha caixinha : caixinhasArray) {
             if (caixinha.getInvestimento().compareTo(Caixinha.VALOR_MINIMO) < 0) {
                 somaDiferencas = somaDiferencas.add(Caixinha.VALOR_MINIMO.subtract(caixinha.getInvestimento()));
@@ -68,14 +69,14 @@ public class RedistribuicaoService {
                 contador++;
             } else if (caixinha.isQuitada()) {
                 contador++;
-            } else if (caixinha.getInvestimento().compareTo(Caixinha.VALOR_MINIMO.multiply(BigDecimal.valueOf(caixinhasArray.length))) < 0) {
+            } else if (caixinha.getInvestimento().compareTo(valorMinimoPorCaixinha) < 0) {
                 contador++;
             }
         }
         BigDecimal valorARemover = somaDiferencas.divide(BigDecimal.valueOf(caixinhasArray.length-contador), MathContext.DECIMAL128);
         for (Caixinha caixinha : caixinhasArray) {
             if (!caixinha.isQuitada() && caixinha.getInvestimento().compareTo(Caixinha.VALOR_MINIMO) != 0
-                    && caixinha.getInvestimento().compareTo(Caixinha.VALOR_MINIMO.multiply(BigDecimal.valueOf(caixinhasArray.length)))>0) {
+                    && caixinha.getInvestimento().compareTo(valorMinimoPorCaixinha)>0) {
                 caixinha.adicionaInvestimento(valorARemover.negate());
             }
         }
@@ -166,8 +167,12 @@ public class RedistribuicaoService {
                 copia.remove(caixinha);
             }
         }
-        lista.addAll(copia);
-        caixinhasArray = lista.toArray(new Caixinha[caixinhasArray.length]);
+        List<Caixinha> listaOrdenadaPorMeses = new ArrayList<>(lista.stream().sorted((o1, o2) ->
+                        BigDecimal.valueOf(ChronoUnit.MONTHS.between(LocalDate.now(), o1.getDataVencimento()))
+                                .compareTo(BigDecimal.valueOf(ChronoUnit.MONTHS.between(LocalDate.now(), o2.getDataVencimento()))))
+                .toList());
+        listaOrdenadaPorMeses.addAll(copia);
+        caixinhasArray = listaOrdenadaPorMeses.toArray(new Caixinha[caixinhasArray.length]);
 
 
 
