@@ -4,7 +4,7 @@ import org.example.auth.controller.request.UsuarioRequest;
 import org.example.auth.controller.response.UsuarioResponse;
 import org.example.auth.mapper.UsuarioMapper;
 import org.example.model.entity.Usuario;
-import org.example.repository.UsuarioRepository;
+import org.example.auth.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,5 +57,42 @@ public class CaixinhaUtils {
                 .compareTo(o1.getInvestimento())
                 ).toList();
         return answer;
+    }
+
+    public static Caixinha[] ordenaPreRedistribuicao(List<Caixinha> caixinhas) {
+        Caixinha[] caixinhasArray = ordenaPorPorcentagemPaga(caixinhas);
+
+        caixinhasArray = ordenaPorTempoProgramado(caixinhasArray);
+        return caixinhasArray;
+    }
+
+    public static Caixinha[] ordenaPorTempoProgramado(Caixinha[] caixinhasArray) {
+        //coloca os de vencimento programado na frnte da lista
+        List<Caixinha> lista = new ArrayList<>();
+        List<Caixinha> copia = new ArrayList<>(Arrays.stream(caixinhasArray.clone()).toList());
+        for (Caixinha caixinha : caixinhasArray) {
+            if (caixinha.isVencimentoProgramado()) {
+                lista.add(caixinha);
+                copia.remove(caixinha);
+            }
+        }
+        List<Caixinha> listaOrdenadaPorMeses = new ArrayList<>(lista.stream().sorted((o1, o2) ->
+                        BigDecimal.valueOf(ChronoUnit.MONTHS.between(LocalDate.now(), o1.getDataVencimento()))
+                                .compareTo(BigDecimal.valueOf(ChronoUnit.MONTHS.between(LocalDate.now(), o2.getDataVencimento()))))
+                .toList());
+        listaOrdenadaPorMeses.addAll(copia);
+        caixinhasArray = listaOrdenadaPorMeses.toArray(new Caixinha[caixinhasArray.length]);
+        return caixinhasArray;
+    }
+
+    public static Caixinha[] ordenaPorPorcentagemPaga(List<Caixinha> caixinhas) {
+        //ordena primeiro por quem tem maior porcentagem paga
+        return caixinhas.stream()
+                .sorted((o1, o2) -> o2.getArrecadado()
+                        .divide(o2.getTotal(), MathContext.DECIMAL128)
+                        .compareTo(o1.getArrecadado()
+                                .divide(o1.getTotal(), MathContext.DECIMAL128))
+                )
+                .toArray(Caixinha[]::new);
     }
 }

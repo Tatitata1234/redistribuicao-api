@@ -35,11 +35,11 @@ public class Caixinha {
     @Column(nullable = false, name = "valor_arrecadado")
     private BigDecimal arrecadado;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "id_classificacao")
     private Classificacao classificacao;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "id_utilidade")
     private Utilidade utililidade;
 
@@ -57,7 +57,7 @@ public class Caixinha {
 
     private String mensagem;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario usuario;
 
@@ -129,11 +129,11 @@ public class Caixinha {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Caixinha caixinha = (Caixinha) o;
-        return quitada == caixinha.quitada && nome.equals(caixinha.nome) && total.equals(caixinha.total) && arrecadado.equals(caixinha.arrecadado) && classificacao == caixinha.classificacao && utililidade == caixinha.utililidade && Objects.equals(investimento, caixinha.investimento) && Objects.equals(pontuacao, caixinha.pontuacao) && Objects.equals(porcentagem, caixinha.porcentagem) && Objects.equals(mensagem, caixinha.mensagem);
+        return id.equals(caixinha.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, total, arrecadado, classificacao, utililidade, investimento, pontuacao, porcentagem, quitada, mensagem);
+        return Objects.hash(id);
     }
 }

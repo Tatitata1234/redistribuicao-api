@@ -1,10 +1,12 @@
 package org.example.controller.request;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -13,6 +15,9 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 public class CaixinhaRequest {
+
+    @NotNull
+    private Long id;
 
     @NotEmpty(message = "Campo 'nome' obrigatório")
     private String nome;
@@ -27,6 +32,11 @@ public class CaixinhaRequest {
     @NotNull
     private boolean quitada;
     private String mensagem;
+
+    private LocalDate dataVencimento;
+
+    @NotNull
+    private boolean vencimentoProgramado;
 
     @Override
     public boolean equals(Object o) {

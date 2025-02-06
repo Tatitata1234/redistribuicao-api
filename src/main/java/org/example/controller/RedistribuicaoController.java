@@ -44,9 +44,6 @@ public class RedistribuicaoController {
 
     @GetMapping
     public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento, @RequestHeader("usuario") long usuarioId) {
-        if (investimento < 26) {
-            return ResponseEntity.badRequest().body(new ArrayList<>());
-        }
         BigDecimal valorSobrou = new BigDecimal(investimento);
         List<CaixinhaResponse> caixinhasRedistribuidas = service.calculaDitribuicaoInvestimento(valorSobrou, usuarioId);
         return ResponseEntity.ok(caixinhasRedistribuidas);

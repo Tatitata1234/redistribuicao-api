@@ -1,2 +1,6 @@
 
-L	java:S106X"+Replace this use of System.out by a logger.(ÚÿËøÿÿÿÿ8ş™×¶¡2
+u	java:S135e"YReduce the total number of break and continue statements in this loop to use at most one.(¿‰··8ÒÜÁ÷°2
+o
+java:S3776_"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(áÄá¶8÷ãÁ÷°2
+]	java:S125m"<This block of commented-out lines of code should be removed.(‹§úáúÿÿÿÿ8“äÁ÷°2
+M	java:S106"+Replace this use of System.out by a logger.(ÚÿËøÿÿÿÿ8³äÁ÷°2

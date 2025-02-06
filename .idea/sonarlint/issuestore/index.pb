@@ -33,8 +33,6 @@ h
 create.sql,c\4\c4e543c554b99ccccd987f50a97bdc2adf2ccccf
 c
 3src/main/java/org/example/model/entity/Usuario.java,0\1\018a5f242e828fcd8c2f8e0f070ed9558b357121
-k
-;src/main/java/org/example/repository/UsuarioRepository.java,f\8\f83f5dbff60f126f0e8c60a39e8bb6feea7e584a
 i
 9src/main/java/org/example/model/entity/Classificacao.java,2\6\268cb167cc8ad9d91420d8aa7174f9901c42061d
 e
@@ -58,3 +56,17 @@ h
 8src/main/java/org/example/auth/mapper/UsuarioMapper.java,2\1\21454d3416ee31c98a03b436c40491377035a476
 C
 updates mensais.sql,c\b\cb7e3849aded4c5698f17b785763c220de7efb61
+p
+@src/main/java/org/example/auth/repository/UsuarioRepository.java,d\1\d106f0b05467bab1892f2a8060eddeece809bc8a
+l
+<src/main/java/org/example/repository/CaixinhaRepository.java,7\c\7c0940571da8ae03521743c134c28b8ec0fcb304
+i
+9src/main/java/org/example/mapper/ClassificacaoMapper.java,4\9\499de2848d5c0371a63d2848b72970df815530c4
+x
+Hsrc/main/java/org/example/controller/response/ClassificacaoResponse.java,c\4\c468379ae496bf27b180811d12ab4945a30560e4
+l
+<src/main/java/org/example/controller/CaixinhaController.java,5\2\5250ecdf73d557f5c5494742a5bb77ea3e17b0d2
+f
+6src/main/java/org/example/service/CaixinhaService.java,b\d\bd40651cbe2d6b678ff75052c53228275535e4b3
+B
+insert_oficial.sql,f\3\f3ba016fc58bad1bac060cdfdb606aea1c1ef181

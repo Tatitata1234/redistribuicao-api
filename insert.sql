@@ -77,3 +77,15 @@ select * from caixinha where id_usuario=1 order by 3-4 desc;
 INSERT INTO caixinha (nome, valor_total, valor_arrecadado, id_classificacao, id_utilidade, quitada, id_usuario)
 VALUES
 ('colocar polpança', 600, 1, 1, (SELECT id FROM utilidade WHERE nome = 'DIVIDA'), false, 1);
+
+select * from caixinha where id_usuario=1 and ativo order by valor_arrecadado desc;
+INSERT INTO caixinha (nome, valor_total, valor_arrecadado, id_classificacao, id_utilidade, quitada, id_usuario)
+VALUES
+('Panela pressão eletrica', 550, 1, 34, (SELECT id FROM utilidade WHERE nome = 'UTIL'), false, 1),
+('Air fryer', 700, 1, 34, (SELECT id FROM utilidade WHERE nome = 'UTIL'), false, 1);
+
+select * from classificacao where id_usuario=1 and ativo order by valor desc
+INSERT INTO caixinha (nome, valor_total, valor_arrecadado, id_classificacao, id_utilidade, quitada, id_usuario)
+VALUES
+('Show com amoreco', 3000, 1.01, 6, (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1),
+('Fantasia', 300, 1.01, 8, (SELECT id FROM utilidade WHERE nome = 'INUTIL'), false, 1);

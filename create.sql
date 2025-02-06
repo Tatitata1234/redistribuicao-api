@@ -56,3 +56,8 @@ ADD COLUMN vencimento_programado BOOLEAN NOT NULL DEFAULT FALSE; -- Adiciona o c
 SELECT column_name, data_type, is_nullable, column_default
 FROM information_schema.columns
 WHERE table_name = 'caixinha';
+-- Alterando a tabela para permitir valores maiores (máximo 1.000.000.000 com 2 casas decimais)
+ALTER TABLE caixinha
+    ALTER COLUMN valor_total TYPE NUMERIC(10, 2),
+    ALTER COLUMN valor_arrecadado TYPE NUMERIC(10, 2),
+    ALTER COLUMN investimento TYPE NUMERIC(10, 2);
