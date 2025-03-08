@@ -18,7 +18,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Builder
 @Entity
-@SQLRestriction("ativo = true or quitada = true")
+@SQLRestriction("ativo = true and quitada = false")
 public class Caixinha {
     public static final BigDecimal VALOR_MINIMO = new BigDecimal(5);
     @Id

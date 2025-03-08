@@ -106,7 +106,7 @@ public class RedistribuicaoService {
                 BigDecimal diferenca = c.getTotal().subtract(c.getArrecadado()).subtract(c.getInvestimento());
 
                 if (primeiraVez && c.isVencimentoProgramado()) {
-                    BigDecimal mesesDiferenca = BigDecimal.valueOf(ChronoUnit.MONTHS.between(LocalDate.now(), c.getDataVencimento()));// + 1);
+                    BigDecimal mesesDiferenca = BigDecimal.valueOf(ChronoUnit.MONTHS.between(LocalDate.now(), c.getDataVencimento())- 1);
                     BigDecimal parcelaMinima = diferenca.divide(mesesDiferenca, MathContext.DECIMAL128);
                     if (parcelaMinima.compareTo(restoTemp) < 0) {
                         c.adicionaInvestimento(parcelaMinima);
@@ -130,17 +130,32 @@ public class RedistribuicaoService {
                     restoTemp = restoTemp.subtract(investimentoCalculado);
                 }
             }
+
             primeiraVez = false;
             ck++;
             totalSomaPontuacao = totalSomaPontuacaoTemp;
-        } while (restoTemp.compareTo(Caixinha.VALOR_MINIMO.multiply(BigDecimal.valueOf(caixinhasArray.length / 2))) >= 0);
+        } while (restoTemp.compareTo(Caixinha.VALOR_MINIMO.multiply(BigDecimal.valueOf(caixinhasArray.length / 2))) >= 0 && ck<10);
 
-        BigDecimal quantidadeNaoQuitada = BigDecimal.valueOf(Arrays.stream(caixinhasArray).filter(item -> !item.isQuitada()).toList().size());
-        BigDecimal restinho = restoTemp.divide(quantidadeNaoQuitada, MathContext.DECIMAL128);
-        Arrays.stream(caixinhasArray).toList().forEach(item -> {
-            if (!item.isQuitada())
-                item.adicionaInvestimento(restinho);
-        });
+
+        for (Caixinha c: caixinhasArray) {//Arrays.stream(caixinhasArray).toList().forEach(item -> {
+            if (!c.isQuitada()){
+                BigDecimal valorQueFaltaParaQuitar = c.getTotal().subtract(c.getArrecadado()).subtract(c.getInvestimento());
+                if (valorQueFaltaParaQuitar.compareTo(restoTemp) < 0) {
+                    c.adicionaInvestimento(valorQueFaltaParaQuitar);
+                    restoTemp = restoTemp.subtract(valorQueFaltaParaQuitar);
+                    c.setQuitada(true);
+                }
+            }
+        }
+        if (restoTemp.compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal quantidadeNaoQuitada = BigDecimal.valueOf(Arrays.stream(caixinhasArray).filter(item -> !item.isQuitada()).toList().size());
+            BigDecimal restinho = restoTemp.divide(quantidadeNaoQuitada, MathContext.DECIMAL128);
+            Arrays.stream(caixinhasArray).toList().forEach(item -> {
+                if (!item.isQuitada()){
+                    item.adicionaInvestimento(restinho);
+                }
+            });
+        }
         System.out.println(ck);
     }
 

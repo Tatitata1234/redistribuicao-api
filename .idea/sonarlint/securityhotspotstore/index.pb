@@ -70,3 +70,5 @@ f
 6src/main/java/org/example/service/CaixinhaService.java,b\d\bd40651cbe2d6b678ff75052c53228275535e4b3
 B
 insert_oficial.sql,f\3\f3ba016fc58bad1bac060cdfdb606aea1c1ef181
+H
+updates janeiro 2025.sql,1\a\1a919c99815e62a73eafe517b4c944cd5d467b98
