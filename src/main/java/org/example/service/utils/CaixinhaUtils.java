@@ -8,7 +8,6 @@ import org.example.model.entity.Utilidade;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -88,10 +87,15 @@ public class CaixinhaUtils {
     public static Caixinha[] ordenaPorPorcentagemPaga(List<Caixinha> caixinhas) {
         //ordena primeiro por quem tem maior porcentagem paga
         return caixinhas.stream()
-                .sorted((o1, o2) -> o2.getArrecadado()
-                        .divide(o2.getTotal(), MathContext.DECIMAL128)
-                        .compareTo(o1.getArrecadado()
-                                .divide(o1.getTotal(), MathContext.DECIMAL128))
+//                .sorted((o1, o2) -> o2.getArrecadado()
+//                        .divide(o2.getTotal(), MathContext.DECIMAL128)
+//                        .compareTo(o1.getArrecadado()
+//                                .divide(o1.getTotal(), MathContext.DECIMAL128))
+//                )
+                .sorted((o1, o2) -> o1.getTotal()
+                        .subtract(o1.getArrecadado())
+                        .compareTo(o2.getTotal()
+                                .subtract(o2.getArrecadado()))
                 )
                 .toArray(Caixinha[]::new);
     }

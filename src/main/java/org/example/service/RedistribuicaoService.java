@@ -1,12 +1,14 @@
 package org.example.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.example.auth.repository.UsuarioRepository;
 import org.example.controller.request.CaixinhaRequest;
 import org.example.controller.response.CaixinhaResponse;
 import org.example.mapper.CaixinhaMapper;
 import org.example.model.dto.SomaPontuacaoDTO;
 import org.example.model.entity.Caixinha;
 import org.example.model.entity.Usuario;
-import org.example.auth.repository.UsuarioRepository;
 import org.example.service.utils.CaixinhaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,6 +29,8 @@ import static org.example.service.utils.CaixinhaUtils.ordenaPreRedistribuicao;
 
 @Service
 public class RedistribuicaoService {
+
+    private Logger logger = LogManager.getLogger(RedistribuicaoService.class);
 
     @Autowired
     private CaixinhaUtils caixinhaUtils;
@@ -93,51 +97,73 @@ public class RedistribuicaoService {
 
     @Cacheable("caixinha")
     private void redistribuir(BigDecimal valorSobrou, Caixinha[] caixinhasArray, BigDecimal totalSomaPontuacao) {
-        BigDecimal totalSomaPontuacaoTemp = totalSomaPontuacao;
-        BigDecimal restoTemp = valorSobrou;
+        SomaPontuacaoDTO dto = SomaPontuacaoDTO.builder()
+                .totalSomaPontuacao(totalSomaPontuacao)
+                .soma(valorSobrou).build();
         int ck = 1;
         boolean primeiraVez = true;
         do {
             for (Caixinha c : caixinhasArray) {
-                if (c.isQuitada() || c.isControleVencimentoProgramado())
-                    continue;
-
-                BigDecimal investimentoCalculado = c.getPontuacao().divide(totalSomaPontuacao, MathContext.DECIMAL128).multiply(restoTemp);
-                BigDecimal diferenca = c.getTotal().subtract(c.getArrecadado()).subtract(c.getInvestimento());
-
-                if (primeiraVez && c.isVencimentoProgramado()) {
-                    BigDecimal mesesDiferenca = BigDecimal.valueOf(ChronoUnit.MONTHS.between(LocalDate.now(), c.getDataVencimento())- 1);
-                    BigDecimal parcelaMinima = diferenca.divide(mesesDiferenca, MathContext.DECIMAL128);
-                    if (parcelaMinima.compareTo(restoTemp) < 0) {
-                        c.adicionaInvestimento(parcelaMinima);
-                        restoTemp = restoTemp.subtract(parcelaMinima);
-                        c.setControleVencimentoProgramado(true);
-                        if (parcelaMinima.compareTo(diferenca) >= 0) {
-                            c.setQuitada(true);
-                        }
-                        totalSomaPontuacaoTemp = totalSomaPontuacaoTemp.subtract(c.getPontuacao());
-                        continue;
-                    }
-                }
-
-                if (investimentoCalculado.compareTo(diferenca) >= 0) {
-                    c.adicionaInvestimento(diferenca);
-                    restoTemp = restoTemp.subtract(diferenca);
-                    c.setQuitada(true);
-                    totalSomaPontuacaoTemp = totalSomaPontuacaoTemp.subtract(c.getPontuacao());
-                } else {
-                    c.adicionaInvestimento(investimentoCalculado);
-                    restoTemp = restoTemp.subtract(investimentoCalculado);
-                }
+                distribuir(totalSomaPontuacao, dto, primeiraVez, c);
             }
 
             primeiraVez = false;
             ck++;
-            totalSomaPontuacao = totalSomaPontuacaoTemp;
-        } while (restoTemp.compareTo(Caixinha.VALOR_MINIMO.multiply(BigDecimal.valueOf(caixinhasArray.length / 2))) >= 0 && ck<10);
+            totalSomaPontuacao = dto.getTotalSomaPontuacao();
+        } while (isValorMinimoAndRedistribuiuDezVezes(caixinhasArray, dto.getSoma(), ck));
 
 
-        for (Caixinha c: caixinhasArray) {//Arrays.stream(caixinhasArray).toList().forEach(item -> {
+        redistribuiRestinhos(caixinhasArray, dto.getSoma());
+        logger.info(ck);
+    }
+
+    private static void distribuir(BigDecimal totalSomaPontuacao, SomaPontuacaoDTO dto, boolean primeiraVez, Caixinha c) {
+        if (isQuitadaOrControleProgramadaJaRecebeu(c))
+            return;
+
+        BigDecimal investimentoCalculado = c.getPontuacao().divide(totalSomaPontuacao, MathContext.DECIMAL128).multiply(dto.getSoma());
+        BigDecimal diferenca = c.getTotal().subtract(c.getArrecadado()).subtract(c.getInvestimento());
+
+        if (isVencimentoProgramadoAndPrimeiraVez(primeiraVez, c)) {
+            BigDecimal mesesDiferenca = BigDecimal.valueOf(ChronoUnit.MONTHS.between(LocalDate.now(), c.getDataVencimento())- 1);
+            BigDecimal parcelaMinima = diferenca.divide(mesesDiferenca, MathContext.DECIMAL128);
+            if (parcelaMinima.compareTo(dto.getSoma()) < 0) {
+                c.adicionaInvestimento(parcelaMinima);
+                dto.setSoma(dto.getSoma().subtract(parcelaMinima));
+                c.setControleVencimentoProgramado(true);
+                if (parcelaMinima.compareTo(diferenca) >= 0) {
+                    c.setQuitada(true);
+                }
+                dto.setTotalSomaPontuacao(dto.getTotalSomaPontuacao().subtract(c.getPontuacao()));
+                return;
+            }
+        }
+
+        if (investimentoCalculado.compareTo(diferenca) >= 0) {
+            c.adicionaInvestimento(diferenca);
+            dto.setSoma(dto.getSoma().subtract(diferenca));
+            c.setQuitada(true);
+            dto.setTotalSomaPontuacao(dto.getTotalSomaPontuacao().subtract(c.getPontuacao()));
+        } else {
+            c.adicionaInvestimento(investimentoCalculado);
+            dto.setSoma(dto.getSoma().subtract(investimentoCalculado));
+        }
+    }
+
+    private static boolean isValorMinimoAndRedistribuiuDezVezes(Caixinha[] caixinhasArray, BigDecimal restoTemp, int ck) {
+        return restoTemp.compareTo(Caixinha.VALOR_MINIMO.multiply(BigDecimal.valueOf(caixinhasArray.length / 2))) >= 0 && ck < 10;
+    }
+
+    private static boolean isVencimentoProgramadoAndPrimeiraVez(boolean primeiraVez, Caixinha c) {
+        return primeiraVez && c.isVencimentoProgramado();
+    }
+
+    private static boolean isQuitadaOrControleProgramadaJaRecebeu(Caixinha c) {
+        return c.isQuitada() || c.isControleVencimentoProgramado();
+    }
+
+    private static void redistribuiRestinhos(Caixinha[] caixinhasArray, BigDecimal restoTemp) {
+        for (Caixinha c: caixinhasArray) {
             if (!c.isQuitada()){
                 BigDecimal valorQueFaltaParaQuitar = c.getTotal().subtract(c.getArrecadado()).subtract(c.getInvestimento());
                 if (valorQueFaltaParaQuitar.compareTo(restoTemp) < 0) {
@@ -156,7 +182,6 @@ public class RedistribuicaoService {
                 }
             });
         }
-        System.out.println(ck);
     }
 
     private SomaPontuacaoDTO calculaSomaPontuacao(Caixinha[] caixinhasArray) {

@@ -1,7 +1,6 @@
 package org.example.controller.response;
 
 import lombok.*;
-import org.example.model.entity.Usuario;
 
 @Getter
 @Setter

@@ -1,7 +1,5 @@
 package org.example.mapper;
 
-import lombok.Builder;
-import org.example.controller.response.CaixinhaResponse;
 import org.example.controller.response.ClassificacaoResponse;
 import org.example.model.entity.Classificacao;
 

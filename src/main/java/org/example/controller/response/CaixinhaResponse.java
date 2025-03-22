@@ -1,6 +1,5 @@
 package org.example.controller.response;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.math.BigDecimal;

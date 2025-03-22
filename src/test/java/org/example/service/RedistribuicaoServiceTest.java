@@ -1,11 +1,7 @@
 package org.example.service;
 
-import org.example.controller.response.CaixinhaResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 public class RedistribuicaoServiceTest {
     @Autowired

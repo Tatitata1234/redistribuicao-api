@@ -29,11 +29,9 @@ public class CaixinhaService {
         entidade.setQuitada(nova.isQuitada());
         entidade.setMensagem(nova.getMensagem());
         entidade.setArrecadado(nova.getArrecadado());
-        //entidade.setClassificacao(nova.getClassificacao());
         entidade.setDataVencimento(nova.getDataVencimento());
         entidade.setNome(nova.getNome());
         entidade.setTotal(nova.getTotal());
-        //entidade.setUtililidade(nova.getUtililidade());
         entidade.setVencimentoProgramado(nova.isVencimentoProgramado());
 
         caixinhaRepository.save(entidade);
