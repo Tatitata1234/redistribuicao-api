@@ -45,7 +45,10 @@ public class RedistribuicaoService {
         return self.doRedistribuicao(valorSobrou, caixinhasArray);
     }
 
-    @Cacheable("caixinha")
+    @Cacheable(
+            value = "caixinha",
+            key = "T(org.example.config.CacheKeyGenerator).gerarChave(#valorSobrou, #caixinhas)"
+    )
     public List<CaixinhaResponse> doRedistribuicao(BigDecimal valorSobrou, List<Caixinha> caixinhas) {
         logger.info("Executando redistribuição com cache...");
 
