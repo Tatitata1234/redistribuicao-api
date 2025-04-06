@@ -78,11 +78,6 @@ public class Caixinha {
                 .divide(this.total.subtract(this.arrecadado), MathContext.DECIMAL128);
     }
 
-
-    public void calculaPorcentagem(BigDecimal totalSomaPontuacao) {
-        this.porcentagem = pontuacao.divide(totalSomaPontuacao, MathContext.DECIMAL128);
-    }
-
     public void adicionaInvestimento(BigDecimal investimentoFinal) {
         if (investimento == null) {
             investimento = investimentoFinal.round(MathContext.DECIMAL32);
