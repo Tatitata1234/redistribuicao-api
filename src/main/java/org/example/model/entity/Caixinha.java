@@ -42,6 +42,7 @@ public class Caixinha {
     @JoinColumn(name = "id_utilidade")
     private Utilidade utililidade;
 
+    @Transient
     private BigDecimal investimento = new BigDecimal(0);
 
     @Transient
@@ -53,6 +54,7 @@ public class Caixinha {
     @Column(nullable = false)
     private boolean quitada;
 
+    @Transient
     private String mensagem;
 
     @ManyToOne(cascade=CascadeType.ALL)

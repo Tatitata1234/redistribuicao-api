@@ -88,3 +88,5 @@ m
 =src/main/java/org/example/exception/ValorMinimoException.java,5\a\5aa49610cc8df3357ee84b86cc6f1d3d5640059a
 v
 Fsrc/main/java/org/example/exception/ValorRemoverInvalidoException.java,3\5\356e803e0a38a40be39fcdca8f64dab02f164af5
+g
+7src/main/java/org/example/config/CacheKeyGenerator.java,d\6\d6b6e2ca459b69883eb61782555554e9a7382b43
