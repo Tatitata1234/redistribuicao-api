@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 public class CacheKeyGenerator {
 
+    private CacheKeyGenerator() {}
+
     public static String gerarChave(BigDecimal valor, List<Caixinha> caixinhas) {
         String valorNormalizado = valor.stripTrailingZeros().toPlainString();
         String idsCaixinhas = caixinhas.stream()
