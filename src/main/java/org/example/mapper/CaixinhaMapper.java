@@ -19,12 +19,11 @@ public class CaixinhaMapper {
                 .total(entity.getTotal())
                 .nome(entity.getNome())
                 .quitada(entity.isQuitada())
-                .classificacao(ClassificacaoMapper.toResponse(entity.getClassificacao()))
+                .classificacao(entity.getClassificacao().getNome())
                 .utilidade(entity.getUtililidade().getNome())
                 .arrecadado(entity.getArrecadado())
                 .investimento(entity.getInvestimento().setScale(2, RoundingMode.HALF_EVEN))
                 .mensagem(entity.getMensagem())
-                .vencimentoProgramado(entity.isVencimentoProgramado())
                 .dataVencimento(entity.getDataVencimento())
                 .build();
     }
@@ -40,7 +39,6 @@ public class CaixinhaMapper {
                 .nome(request.getNome())
                 .mensagem(request.getMensagem())
                 .dataVencimento(request.getDataVencimento())
-                .vencimentoProgramado(request.isVencimentoProgramado())
                 .build();
     }
 

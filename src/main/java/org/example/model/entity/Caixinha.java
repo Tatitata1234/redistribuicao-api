@@ -42,7 +42,6 @@ public class Caixinha {
     @JoinColumn(name = "id_utilidade")
     private Utilidade utililidade;
 
-    @Column(nullable = false)
     private BigDecimal investimento = new BigDecimal(0);
 
     @Transient
@@ -68,16 +67,13 @@ public class Caixinha {
 
     private LocalDate dataVencimento;
 
-    @Column(nullable = false)
-    private boolean vencimentoProgramado = false;
-
     @Transient
     private boolean controleVencimentoProgramado = false;
 
     public void calculaPontuacao() {
         this.pontuacao = new BigDecimal(this.classificacao.getValor() *
                 this.utililidade.getValor())
-                .divide(total.subtract(arrecadado), MathContext.DECIMAL128);
+                .divide(this.total.subtract(this.arrecadado), MathContext.DECIMAL128);
     }
 
 

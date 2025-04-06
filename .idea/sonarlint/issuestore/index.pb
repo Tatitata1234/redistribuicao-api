@@ -74,3 +74,17 @@ H
 updates janeiro 2025.sql,1\a\1a919c99815e62a73eafe517b4c944cd5d467b98
 J
 updates fevereiro 2025.sql,3\7\37e7c5b7bb4ccb9735b47d5c049422c13bd6f067
+Y
+)src/main/resources/application.properties,0\6\06f65155ec73600b9fc5c4dc2883d4bb84d8e284
+F
+updates marco 2025.sql,a\7\a76642ebadeeeeb1bab82f9136857afcc08e68f8
+p
+@src/test/java/org/example/service/RedistribuicaoServiceTest.java,1\b\1b436334adbf11f91dfc700d0ecc793552c0436d
+w
+Gsrc/main/java/org/example/exception/CaixinhaNaoEncontradaException.java,9\d\9dd1dbdf94c5010bca39ea434a6383ac95efeac8
+v
+Fsrc/main/java/org/example/exception/UsuarioNaoEncontradoException.java,2\a\2a4a5427da70c4fd7b880e672f62a233b0b2e3ac
+m
+=src/main/java/org/example/exception/ValorMinimoException.java,5\a\5aa49610cc8df3357ee84b86cc6f1d3d5640059a
+v
+Fsrc/main/java/org/example/exception/ValorRemoverInvalidoException.java,3\5\356e803e0a38a40be39fcdca8f64dab02f164af5

@@ -1,19 +1,20 @@
 package org.example.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.controller.request.CaixinhaRequest;
+import org.example.exception.CaixinhaNaoEncontradaException;
 import org.example.mapper.CaixinhaMapper;
 import org.example.model.entity.Caixinha;
 import org.example.repository.CaixinhaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CaixinhaService {
 
-    @Autowired
-    private CaixinhaRepository caixinhaRepository;
+    private final CaixinhaRepository caixinhaRepository;
 
     public void edita(CaixinhaRequest request) {
         Caixinha nova = CaixinhaMapper.toEntity(request);
@@ -21,7 +22,7 @@ public class CaixinhaService {
         Optional<Caixinha> velha = caixinhaRepository.findById(nova.getId());
 
         if (velha.isEmpty()) {
-            throw new RuntimeException("Caixinha não encontrada");
+            throw new CaixinhaNaoEncontradaException("Caixinha não encontrada");
         }
 
         Caixinha entidade = velha.get();
@@ -32,7 +33,6 @@ public class CaixinhaService {
         entidade.setDataVencimento(nova.getDataVencimento());
         entidade.setNome(nova.getNome());
         entidade.setTotal(nova.getTotal());
-        entidade.setVencimentoProgramado(nova.isVencimentoProgramado());
 
         caixinhaRepository.save(entidade);
     }

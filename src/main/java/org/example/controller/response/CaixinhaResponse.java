@@ -15,11 +15,10 @@ public class CaixinhaResponse {
     private String nome;
     private BigDecimal total;
     private BigDecimal arrecadado;
-    private ClassificacaoResponse classificacao;
+    private String classificacao;
     private String utilidade;
     private BigDecimal investimento = new BigDecimal(0);
     private boolean quitada;
     private String mensagem;
-    private boolean vencimentoProgramado;
     private LocalDate dataVencimento;
 }

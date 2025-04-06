@@ -1,6 +1,0 @@
-
-u	java:S135e"YReduce the total number of break and continue statements in this loop to use at most one.(¿‰··8Ûýô ×2
-o
-java:S3776_"RRefactor this method to reduce its Cognitive Complexity from 35 to the 15 allowed.(áÄá¶8úÿô ×2
-X	java:S125Œ"<This block of commented-out lines of code should be removed.(Œ©68þÿô ×2
-M	java:S106Ÿ"+Replace this use of System.out by a logger.(ÚÿËøÿÿÿÿ8€€õ ×2
