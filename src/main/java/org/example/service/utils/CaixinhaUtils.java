@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.example.controller.response.CaixinhaResponse;
 import org.example.mapper.CaixinhaMapper;
 import org.example.model.entity.Caixinha;
+import org.example.service.validation.CaixinhaValidator;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ public class CaixinhaUtils {
     private static final Logger logger = LogManager.getLogger(CaixinhaUtils.class);
     public static final BigDecimal VALOR_ABSURDAMENTE_ALTO = BigDecimal.valueOf(10000000);
     public static final BigDecimal DIVISOR_100 = BigDecimal.valueOf(100);
+    public static final String FIM_ORDENACAO = "Fim ordenação";
 
     private CaixinhaUtils() {}
 
@@ -38,7 +40,7 @@ public class CaixinhaUtils {
             logger.warn("Erro ao ordenar caixinhas após cálculo");
             return caixinhas.stream().map(CaixinhaMapper::toResponse).toList();
         }
-        logger.info("Fim ordenação");
+        logger.info(FIM_ORDENACAO);
         return ordenaFinal.values().stream().toList();
     }
 
@@ -54,16 +56,27 @@ public class CaixinhaUtils {
             else
                 diferencaMeses = VALOR_ABSURDAMENTE_ALTO;
 
-            logger.trace("Montando chave para caixinha: {}", c.getNome());
-            BigDecimal key = diferencaMeses.add(c.getTotal().subtract(c.getArrecadado()).add(BigDecimal.valueOf(c.getId())).divide(VALOR_ABSURDAMENTE_ALTO, MathContext.DECIMAL32));
+            CaixinhaValidator.validateMesesDiferenca(diferencaMeses);
+
+            logger.trace("Montando chave para caixinha pré cálculo: {}", c.getNome());
+            BigDecimal key = diferencaMeses.add(
+                    c.getTotal()
+                    .subtract(c.getArrecadado())
+                    .add(BigDecimal.valueOf(c.getId()))
+                    .divide(VALOR_ABSURDAMENTE_ALTO, MathContext.DECIMAL32)
+            );
             arvoreOrdenada.putIfAbsent(key, c);
-            logger.debug("Chave: {} Caixinha: {}", key.round(MathContext.DECIMAL128), c.getNome());
+
+            logger.debug("Chave pré cálculo: {} Caixinha: {}",
+                    key.round(MathContext.DECIMAL128), c.getNome());
         }
+
         if (arvoreOrdenada.size() != caixinhas.size()) {
             logger.warn("Erro ao ordenar caixinhas pré cálculo");
             return caixinhas;
         }
-        logger.info("Fim ordenação");
+
+        logger.info(FIM_ORDENACAO + " Pré");
         return arvoreOrdenada.values().stream().toList();
     }
 }

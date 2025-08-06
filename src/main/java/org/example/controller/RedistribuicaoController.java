@@ -30,26 +30,40 @@ public class RedistribuicaoController {
     private final Logger logger = LogManager.getLogger(RedistribuicaoController.class);
 
     @PostMapping("/json")
-    public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento, @RequestBody @Valid List<CaixinhaRequest> caixinhas) {
+    public ResponseEntity<List<CaixinhaResponse>> listar(
+            @RequestParam("investimento") long investimento,
+            @RequestBody @Valid List<CaixinhaRequest> caixinhas) {
+
         if (investimento < caixinhas.size()) {
             return ResponseEntity.badRequest().body(new ArrayList<>());
         }
+
         BigDecimal valorSobrou = new BigDecimal(investimento);
-        List<CaixinhaResponse> caixinhasRedistribuidas = service.calculaDistribuicaoInvestimento(valorSobrou, caixinhas);
+
+        List<CaixinhaResponse> caixinhasRedistribuidas = service
+                .calculaDistribuicaoInvestimento(valorSobrou, caixinhas);
+
         return ResponseEntity.ok(caixinhasRedistribuidas);
     }
 
     @GetMapping
-    public ResponseEntity<List<CaixinhaResponse>> listar(@RequestParam("investimento") long investimento, @RequestHeader("usuario") long usuarioId) {
+    public ResponseEntity<List<CaixinhaResponse>> listar(
+            @RequestParam("investimento") long investimento,
+            @RequestHeader("usuario") long usuarioId) {
+
         logger.debug("Investimento: {}, usuario: {}", investimento, usuarioId);
         try {
             BigDecimal valorSobrou = new BigDecimal(investimento);
-            List<CaixinhaResponse> caixinhasRedistribuidas = service.calculaDistribuicaoInvestimento(valorSobrou, usuarioId);
+
+            List<CaixinhaResponse> caixinhasRedistribuidas = service
+                    .calculaDistribuicaoInvestimento(valorSobrou, usuarioId);
+
             return ResponseEntity.ok(caixinhasRedistribuidas);
         } catch (RuntimeException e) {
             logger.error("Erro ao calcular distribuição: {}", e.getMessage(), e);
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of(CaixinhaResponse.builder().mensagem(e.getMessage()).build()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(List.of(CaixinhaResponse.builder().mensagem(e.getMessage()).build()));
         }
     }
 }
